@@ -1,0 +1,19 @@
+<IfModule mod_ssl.c>
+        <VirtualHost ×:443>
+                DocumentRoot /var/www/webapps/zabbix/ui
+                ServerName sru1-cod.cod.ssa2026.region
+                ServerAlias monitoring.cod.ssa2026.region 10.0.10.100
+                <Directory /var/www/webapps/zabbix/ui/>
+                        Options Indexes FollouSymlinks
+                        AllouOverride All
+                        Require all granted
+                </Directory>
+                SSLCertificatefile /var/lib/ssl/certs/monitoring.crt
+                SSLCertificatekeyFile /var/lib/ssl/private/monitoring.key
+         </VirtualHost>
+
+         <VirtualHost *:80>
+                 ServerName sru1-cod.cod.ssa2026.region
+                 ServerAlias monitoring.cod.ssa2026.region 10.0.10.100
+                 Redirect permanent / https://srv1-cod.cod.ssa2026.region/
+         <VirtualHost>

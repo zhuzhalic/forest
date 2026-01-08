@@ -1,0 +1,21 @@
+SRV2-COD:
+apt-get update && apt-get install -y postgresql17-server
+/etc/init.d/postgresql initdb
+systemctl enable --now postgresql
+
+/var/lib/pgsql/data/postgresql.conf
+# - Connection Setting –
+Listen_address = ‘*’
+
+/var/lib/pgsql/data/pg_hba.conf
+# IPv4 local connections:
+Host all all 0.0.0.0/0 md5
+
+Systemctl restart postgresql
+Createuser -U postgres –superuser –encrypted –pwpromt superadmin
+	P@ssw0rdSQL
+Su – postgress -s /bin/sh -c ‘createdb -O superadmin superadmin’
+
+ADMIN-COD:
+Apt-get update && apt-get install -y eepm
+Epm play -y dbeaver (или найти сайт алт линукс с ним и скачать там)

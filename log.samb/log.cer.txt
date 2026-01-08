@@ -1,0 +1,48 @@
+SRV1-COD:
+Mkdir /var/ca
+Nano /etc/openssl/openssl.cnf
+[CA_default]
+dir      =    /var/ca
+
+
+mkdir /var/ca
+ nano /etc/openssl/openss1.cnf
+ cd /var/ca
+ mkdir certs
+ mkdir crl
+ mkdir neucerts
+ nkdir private
+ touch index.txt
+ touch serial
+ touch crlnunber
+ echo 01 > serial
+ echo 01 > crlnumber
+ pwd
+ ls
+
+openssl genrsa -out private/cakey.pem
+ openssl req -new -key private/cakey.pen -out cacert.csr
+
+openssl x509 -req -days 1025 -in cacert.csr -signkey private/cakey.pem -out cacert.pem
+
+
+
+ADMIN-COD:
+scp admin@srv1-cod.cod.ssa2026.region:/var/ca/cacert.pem  /etc/pki/ca-trust/source/anchors/
+update-ca-trust
+
+Сертификат для Заббикса:
+cd /var/ca
+Openssl genrsa-out newcerts/monitoring.key
+Openssl req -new -key newcerts/monitoring.key -out newcerts/monitoring.csr
+
+Cat <<EOF  > monitoring.ext
+  authorityKeyIdentifier=keyid,issuer
+  basicConstraints=CA:FALSE
+  subjectAltName=@alt_names
+  [alt_names]
+  DNS.1=srv1-cod.cod.ssa2026.region
+  DNS.2=monitoring.cod.ssa2026.region
+  IP.1=10.0.10.100
+EOF
+openssl x509 -req -CA cacert.pem -CAkey private/cakey.pem -in newcerts/monitoring.csr -out newcerts/monitoring.crt -days 365 -CAcreateserial -extfile monitoring.ext

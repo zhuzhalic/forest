@@ -1,0 +1,22 @@
+SRV1-COD:
+Apt-get update && apt-get install bind bind-utils -y
+Nano /etc/bind/options.conf
+Listen-on any
+Forwarders 100.100.100.100
+Allow-query any
+
+Nano /etc/bind/rfc1912.conf
+
+Cp /etc/bind/zone/localhost /etc/bind/zone/cod.ssa2026.region
+Chown root:named /etc/bind/zone/cod.ssa2026.region
+
+Nano /etc/bind/zone/cod.ssa2026.region
+
+
+Cp /etc/bind/zone/127.in-addr.arpa /etc/bind/zone/rev1cod
+Chown root:named /etc/bind/zone/rev1cod
+
+Nano /etc/bind/zone/rev1cod
+
+
+Systemctl enable –-now bind

@@ -1,0 +1,20 @@
+SW1-A:
+Ovs-vsctl set bridge SW1-A rstp_enable=true
+
+Ovs-vsctl set port ens192 vlan_mode=native-tagged
+Ovs-vsctl set port ens161 vlan_mode=native-tagged
+Ovs-vsctl set port ens224 vlan_mode=native-tagged
+Ovs-vsctl set port ens256 vlan_mode=native-tagged
+
+Ovs-vsctl set bridge SW1-A other_config:stp-protocol=rstp
+Ovs-vsctl set bridge SW1-A other_config:rstp-priority=0
+
+
+SW2-A:
+Ovs-vsctl set bridge SW2-A rstp_enable=true
+
+Ovs-vsctl set port ens192 vlan_mode=native-tagged
+Ovs-vsctl set port ens224 vlan_mode=native-tagged
+
+Ovs-vsctl set bridge SW1-A other_config:stp-protocol=rstp
+Ovs-vsctl set bridge SW1-A other_config:rstp-priority=32768

@@ -1,0 +1,17 @@
+$TLL 1D    
+@    IN    SOA    cod.ssa2026.region. root.cod.ssa2026.region. (
+                          2025110508      ; serial
+                          12H             ; refresh
+                          1H              ; retry
+                          1U              ; expire
+                          1H              ; ncache
+                  )
+rtr-cod     IN    NS   srv1-cod.cod.ssa2026.region.
+srv1-cod    IN    A    10.255.255.1
+srv2-cod    IN    A    10.0.30.100
+sw1-cod     IN    A    10.0.30.200
+sw2-cod     IN    A    10.0.30.253
+admin-cod   IN    A    10.0.30.252
+cli-cod     IN    A    10.0.30.1
+fw-cod      IN    A    10.0.30.254
+sip-cod     IN    A    10.0.50.100

@@ -1,0 +1,18 @@
+$TTL    1D
+@    IN    SOA    cod.ssa2026.region. root.cod.ssa2026.region. (
+                          2025110500      ; serial
+                          12H             ; refresh
+                          1H              ; retry
+                          1U              ; expire
+                          1H              ; ncache
+                  )
+         IN    NS    srv1-cod.cod.ssa2026.region.
+254.30   IN    NS    fw-cod.cod.ssa2026.region.
+253.30   IN    PTR   sw1-cod.cod.ssa2026.region.
+252.30   IN    PTR   sw2-cod.cod.ssa2026.region.
+1.30     IN    PTR   admin-cod.cod.ssa2026.region.
+1.50     IN    PTR   cli-cod.cod.ssa2026.region.
+1.255    IN    PTR   rtr-cod.cod.ssa2026.region.
+100.50   IN    PTR   sip-cod.cod.ssa2026.region.
+100.30   IN    PTR   srv1-cod.cod.ssa2026.region.
+200.30   IN    PTR    srv2-cod.cod.ssa2026.region.

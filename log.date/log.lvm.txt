@@ -1,0 +1,8 @@
+SRV1-COD:
+pvcreate /dev/sdb
+vgcreate VG /dev/sdb
+lvcreate -l 100%FREE -n DATA VG
+mkfs.xfs /dev/VG/DATA
+mkdir /opt/data
+nano /etc/fstab - /dev/VG/DATA  /opt/data xfs  defaults,_netdev 0 0
+mount -av
