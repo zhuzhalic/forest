@@ -1,0 +1,194 @@
+CORE:
+hostname MPLS-GW-CORE
+banner motd !REASKILLS 2026!
+
+bridge CON
+exit
+
+port ge1 (k CR)
+service-instance CR
+encapsulation dot1q 20
+rewrite pop 1
+service-instance INET
+encapsulation untagged
+connect bridge CON
+
+port ge0 (k BR)
+service-instance BR
+encapsulation dot1q 10
+rewrite pop 1
+service-instance INET
+encapsulation untagged
+connect bridge CON
+
+router ldp
+targeted-peer ipv4 1.1.1.1
+ exit-targeted-peer-mode
+targeted-peer ipv4 3.3.3.3
+ exit-targeted-peer-mode
+transport-address 2.2.2.2
+
+int loopback.0
+ip add 2.2.2.2/32
+ldp enable ipv4
+
+int BR
+connect port ge0 service-instance BR
+ip add 172.16.0.2/30
+ldp enable ipv4
+label-switching
+
+int CR
+connect port ge1 service-instance CR
+ip add 172.16.1.2/30
+ldp enable ipv4
+label-switching
+
+int INET 
+connect bridge CON 
+ip add 10.0.0.254/24
+
+router ospf1 
+network 2.2.2.2/32 area 0 
+network 172.16.0.0/30 area 0
+network 172.16.1.0/30 area 0
+ospf router-id 2.2.2.2
+ 
+port ge2 
+service-instance WAN
+encapsulation untagged
+
+int WAN connect port ge2 service-instance WAN
+ip nat outside 
+ip add 192.168.122.110/24
+
+int INET
+ip nat inside
+
+ip nat pool VP 10.0.0.1-10.0.0.254
+
+ip nat source dynamic inside pool VP overload 192.168.122.110
+
+ip route  0.0.0.0 0.0.0.0 192.168.122.1
+
+BR:
+hostname MPLS-GW-BR
+
+port ge2 (k CORE)
+service-instance WAN
+encapsulation dot1q 10
+rewrite pop 1
+service-instance INET
+encapsulation untagged
+
+port ge0/1
+service-instance INET
+encapsulation untagged
+
+int loopback.0
+ip add 1.1.1.1/32
+ldp enable ipv4
+
+int WAN
+ip add 172.16.0.1/30
+connect port ge2 service-instance WAN 
+ldp enable ipv4
+label-switching
+
+vpls-instance VP 100
+member vpls-vc vc10 raw
+member port ge0 service-instance INET
+member port ge1 service-instance INET
+member port ge2 service-instance INET
+signaling ldp 
+vpls-peer 3.3.3.3
+exit-signaling
+
+router ldp
+targeted-peer ipv4 2.2.2.2
+ exit-targeted-peer-mode
+targeted-peer ipv4 3.3.3.3
+ exit-targeted-peer-mode
+transport-address 1.1.1.1
+
+router ospf 1
+ospf router-id 1.1.1.1
+network 1.1.1.1/32 area 0
+network 172.16.0.0/30 area 0
+
+, MPLS l2-circuit vc 10 ( адрес core)
+l2vpn-vpws vc10
+signaling ldp
+neighbor 2.2.2.2
+vc-id 10
+exit-vpws-neighbor
+mode raw
+no shutdown
+
+CR:
+hostname MPLS-GW-BR
+
+port ge2 (k CORE)
+service-instance WAN
+encapsulation dot1q 20
+rewrite pop 1
+
+port ge0/1
+service-instance INET
+encapsulation untagged
+
+int loopback.0
+ip add 3.3.3.3/32
+ldp enable ipv4
+
+int WAN
+ip add 172.16.1.1/30
+connect port ge2 service-instance WAN 
+ldp enable ipv4
+label-switching
+
+vpls-instance VP 100
+member vpls-vc vc10 raw
+member port ge0 service-instance INET
+member port ge1 service-instance INET
+signaling ldp 
+vpls-peer 1.1.1.1
+exit-signaling
+
+router ldp
+targeted-peer ipv4 2.2.2.2
+ exit-targeted-peer-mode
+targeted-peer ipv4 1.1.1.1
+ exit-targeted-peer-mode
+transport-address 3.3.3.3
+
+router ospf 1
+ospf router-id 3.3.3.3
+network 3.3.3.3/32 area 0
+network 172.16.1.0/30 area 0
+
+Общая для MPLS-GW
+
+username adminer
+password P@ssw0rd
+role admin
+
+no username admin
+
+enable secret P@ssw0rd
+
+service password-encryption
+
+security none (for ssh)
+
+CORE: router ospf 1 
+.              default-information originate
+.               passive-interface WAN
+security-profile 10
+.              rule 0 deny tcp any 192.168.122.110/24 eq 22
+.              rule 1 permit any any any 
+security 10
+
+BR/CR:
+snmp-server group reaskills v3 auth
+snmp-server user snmpuser group reaskills auth sha snmppass
