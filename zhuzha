@@ -191,3 +191,5 @@ security 10
 
 __Add New User__
 /usr/bin/astra-freeipa-client -d "name domain" -u "admin" -p "P@ssw0rd" -y --par '--hostname=name pc and domain --force-join'
+
+Owner dom in /etc/bind/ipa-options-exf.conf add listen-on-v4 and dnnsec no
