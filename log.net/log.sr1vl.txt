@@ -1,12 +1,9 @@
 SRV1-COD:
-Nmcli con add type vlan con-name MGMT ifname ens192.3 dev ens192 id 300 ipv4.address 10.0.30.100/24 ipv4.gateway 10.0.30.254 connection.autoconnect yes ipv4.method manual
-Nmcli con add type vlan con-name VOIP ifname ens192.4 dev ens192 id 400 ipv4.address 203.0.113.100/24 connection.autoconnect yes ipv4.method manual
-Nmcli con add type vlan con-name SRV-COD ifname ens192.1 dev ens192 id 100 ipv4.address 10.0.30.100/24 connection.autoconnect yes ipv4.method manual
-Nmcli con add type vlan con-name DATA ifname ens192.2 dev ens192 id 200 ipv4.address 10.0.20.100/24 connection.autoconnect yes ipv4.method manual
+nmcli con add con-name SRV-COD type ethernet ifname ens192 connection.autoconnect yes ipv4.method manual ipv4.address 10.0.10.1/24 ipv4.gateway 10.0.10.254
+nmcli con add con-name DATA type ethernet ifname ens224 connection.autoconnect yes ipv4.method manual ipv4.address 10.0.20.1/24 
 
 
 SRV2-COD:
-Nmcli con add type vlan con-name MGMT ifname ens192.3 dev ens192 id 300 ipv4.address 10.0.30.200/24 ipv4.gateway 10.0.30.254 connection.autoconnect yes ipv4.method manual
-Nmcli con add type vlan con-name VOIP ifname ens192.4 dev ens192 id 400 ipv4.address 203.0.113.200/24 connection.autoconnect yes ipv4.method manual
-Nmcli con add type vlan con-name SRV-COD ifname ens192.1 dev ens192 id 100 ipv4.address 10.0.30.200/24 connection.autoconnect yes ipv4.method manual
-Nmcli con add type vlan con-name DATA ifname ens192.2 dev ens192 id 200 ipv4.address 10.0.20.200/24 connection.autoconnect yes ipv4.method manual
+nmcli con add con-name SRV-COD type ethernet ifname ens192 connection.autoconnect yes ipv4.method manual ipv4.address 10.0.10.2/24 ipv4.gateway 10.0.10.254
+nmcli con add con-name DATA type ethernet ifname ens224 connection.autoconnect yes ipv4.method manual ipv4.address 10.0.20.2/24 
+
