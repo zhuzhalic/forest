@@ -77,3 +77,6 @@ RTR-COD:
 #Username netuser
     # Role admin
 
+AltLinux:
+useradd netuser
+
