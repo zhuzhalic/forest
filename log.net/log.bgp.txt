@@ -1,75 +1,92 @@
-BGP
+RTR-COD:
+
+--------------------------
+bgp:
 #router bgp 64500
 #bgp router-id 178.207.179.4 
 #neighbor 178.207.179.1 remote-as 31133
 #exit
 #do wr
+
+
+
+
+
+
+
+
+-/-/-/-/-/-/-/-/-/-/-
 RTR-A:
 #hostname rtr-a 
 #do wr
+# ip domain name office.ssa2026.region
+----------------------
 #port ge1 (k office a)
 #Service-instance ge1
 #Encapsulation untagged
-#Int ge1
-#connect port ge1 service-instance ge1
-#ip nat outside
-
+------------------------
 #port ge1 
 #service-instance MGMT
 #encapsulation dot1q 300
 #rewrite pop 1
 #exit
+------------------------
 #int MGMT 
 #connect port ge1 service-instance MGMT
 #ip nat inside 
 #ip add 192.168.30.254/24
+-------------------------
 #port ge1 
 #service-instance VOIP
 #encapsulation dot1q 400
 #rewrite pop 1
 #exit
+--------------------------
 #int VOIP
 #connect port ge1 service-instance VOIP
 #ip nat inside 
 #ip add 192.168.40.254/24
+--------------------------
 #port ge1 
 #service-instance CLI
 #encapsulation dot1q 200
 #rewrite pop 1
 #exit
+---------------------------
 #int CLI
 #connect port ge1 service-instance CLI
 #ip nat inside 
 #ip add 192.168.20.254/24
-
-
-
-
+---------------------------
 #port ge1 
 #service-instance SRV
 #encapsulation dot1q 100
 #rewrite pop 1
 #exit
+---------------------------
 #int SRV 
 #connect port ge1 service-instance SRV
 #ip nat inside 
 #ip add 192.168.10.254/24
-
-Ip nat pool MGMT 192.168.30.1-192.168.30.254
+----------------------------
+Ip nat pool MGMT 192.168.30.1-192.168.30.254  ## and in cod
 Ip nat pool CLI 192.168.20.1-192.168.20.254
 Ip nat pool SRV 192.168.10.1-192.168.10.254
 Ip nat pool VOIP 192.168.40.1-192.168.40.254
-
+---------------------------------------
 Ip nat source dynamic inside-to-outside pool SRV overload interface ge0
 Ip nat source dynamic inside-to-outside pool CLI overload interface ge0
 Ip nat source dynamic inside-to-outside pool MGMT overload interface ge0
 Ip nat source dynamic inside-to-outside pool VOIP overload interface ge0
-
+--------------------------------------
 #port ge0 (k ISP)
 #Service-instance ge0
 #Encapsulation untagged
+--------------------------------------
 #Int ge0
 #connect port ge1 service-instance ge0
+#ip nat outside
 #ip add 178.207.179.28/29 (179.25 – ISP)
 #ip route 0.0.0.0/0 178.207.179.25
-
+----------------------------------
+#do wr
