@@ -1,0 +1,46 @@
+SW1-A:
+Ovs-vsctl set port ens& vlan_mode=native-untagged
+Ovs-vsctl set port ens& vlan_mode=native-untagged
+Ovs-vsctl set port ens& vlan_mode=native-untagged
+Ovs-vsctl set port ens& vlan_mode=native-untagged
+-------------------------------------------------
+Ovs-vsctl set bridge SW1-A rstp_enable=true
+Ovs-vsctl set bridge SW1-A other_config:stp-protocol=rstp
+Ovs-vsctl set bridge SW1-A other_config:rstp-priority=0
+-----------------------------------------------------------
+SW2-A:
+Ovs-vsctl set port ens& vlan_mode=native-tagged
+Ovs-vsctl set port ens& vlan_mode=native-untagged
+----------------------------------------------
+Ovs-vsctl set bridge SW2-A rstp_enable=true
+Ovs-vsctl set bridge SW1-A other_config:stp-protocol=rstp
+Ovs-vsctl set bridge SW1-A other_config:rstp-priority=32768
+--------------------------------------------------------
+SW1-COD\SW2:
+systemctl enable –-now openvswitch
+Ovs-vsctl add-br SW1-COD
+
+ovs-vsctl add-port SW1-COD MGMT-COD tag=300 vlan_mode=native-untagged — set interface MGMT-COD type=internal 
+Ip link set up mgmt 
+Ip add add 10.0.30.253/24 Dev mgmt
+Ip ro add default via 10.0.30.254
+
+SW1-COD:
+Ovs-vsct add-port SW1-COD ens192(к Ideco) trunks=100,200,300 
+Ip link set MGMT-COD up
+Ip link set ovs-system up
+Ip link set SW1-COD up
+
+bond:
+Nmcli con add type bond con-name bond1 ifname bond1 bond.options “mode=active-backup” 
+Nmcli con add type bond-slave ifname ens & con-name bond1-ens& master bond1 
+Nmcli con add type bond-slave ifname ens& con-name bond1-ens& master bond1 
+Nmcli con mod bond1 ipv4.method manual ipv4.address 127.0.0.11/32
+Nmcli con mod bond1 connection.autocconect yes
+Nmcli con mod bond1 connection.autoconnect-slaves yes
+Nmcli con up bond1
+
+Ovs-vsct add-port SW1-COD bond1 trunks=100,200,400,500 tag=300 vlan_mode=native-untagged
+Ovs-vsctl set port bond1 bond_mode=active-backup
+
+echo "1" >> /proc/sys/net/ipv4/ip_forward
