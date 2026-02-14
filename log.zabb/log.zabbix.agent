@@ -1,22 +1,24 @@
 #Zabbix-Agent:
 srv1-cod/srv2-cod:
 apt-get install zabbix-agent -y
-Server=10.0.10.100
-ServerActive=10.0.10.100\200
+Server=10.0.10.1
+ServerActive=10.0.10.1\2
 Hostname=srv1/2-cod.cod.ssa2026.region
 systemctl enable --now zabbix_agentd.service
+-----------------------------------
 dc-a/sw1-cod/sw2-cod/sw1-a/sw2-a:
 apt-get install zabbix-agent -y
-Server=10.0.30.100
+Server=10.0.10.1
 ServerActive=10.0.30.253/2  192.168.30.100/252/3
 Hostname=sw1/2-cod,sw1/2-a,dc-a
 systemctl enable --now zabbix_agentd.service
-
+------------------------------------------
 rtr-cod/rtr-a:
 #snmp-server enable snmp
 #snmp-server community public ro
 #do wr
-
-При добавлении Эко-роутера – указать внутренний адрес 192.168.30.254
+--------------------------------------------
+При добавлении Эко-роутера rtr-a – указать внутренний адрес 192.168.30.254
 Сервера – Сервер Линукс
-Сетевые – Нетворк Девайс
+Сетевые – Нетворк Девайс #group
+
