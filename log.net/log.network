@@ -1,0 +1,17 @@
+nano /etc/sysconfig/network-scripts/ifcfg-eth0
+BROWSER_ONLY=:no
+BOOTPROTO=static
+IPADDR=10.0.50.100
+NETMASK=255.255.255.0
+GATEWAY=10.0.50.254
+DNS1=10.0.10.1
+reboot
+--------------------------
+Clinets - open app for pages and search Yate, but before that apt-get update 
+
+Site:
+Setting -> Advances Setting
+Sip channel Driver (chan_sip) -> submit
+Setting -> Asterisk SIP setting 
+Bind Port 5060 -> submit
+Application -> Extension -> Add New Sip
