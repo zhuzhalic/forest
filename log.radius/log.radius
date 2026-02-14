@@ -17,44 +17,32 @@ Netuser Cleartext-Password := “P@ssw0rd”
               Cisco-AVPair = “shell:roles=admin”
 Ctrl+O next Ctrl+X
 
-
-
 Systemctl restart radiusd
-“Открываем порт для работы”
-nano /etc/raddb/sites-enabled/default
-Ищем строку (она будет закомментирована, надо открыть и прописать)
-interface = ens192.3
-
-
-
+?“Открываем порт для работы”?
+?nano /etc/raddb/sites-enabled/default?
+?Ищем строку (она будет закомментирована, надо открыть и прописать)?
+?interface = ens192.3?
 
 Добавим просто пользователя 
 useradd netuser
 Проверяем просто Радиус
-radtest netuser P@ssw0rd 10.0.30.100 1812 P@ssw0rd
+radtest netuser P@ssw0rd 10.0.10.1 1812 P@ssw0rd
 
 SW1-COD/SW2-COD:
 Apt-get update && apt-get install pam_radius -y 
 nano /etc/pam_radius_auth.conf
-10.0.30.100 (tab) P@ssw0rd (tab) 3
-
+10.0.10.1 (tab) P@ssw0rd (tab) 3
 
 Nano /etc/pam.d/sshd
 Вставить первой строчкой
 auth           sufficient      pam_radius_auth.so
 
-
-
 Nano /etc/pam.d/system-auth-local
 auth        sufficient       pam_radius_auth.so
-
-
 
 Apt-get install freeradius-utils -y
 Apt-get install openssh -y 
 Systemctl daemon-reload
-
-
 
 Nano /etc/openssh/sshd_config
 В строчку к HostKey
@@ -65,18 +53,16 @@ KbdInteractiveAuthentication yes
 ChallengeResponseAuthentication yes
 AuthenticationMethods keyboard-interactive	
 
-
-
-
 Systemctl restart sshd
 Systemctl status sshd
 
 RTR-COD:
 #Aaa recedence tacacs radius local
-#Aaa radius-server 10.0.30.100 port 1812 secret P@ssw0rd auth
+#Aaa radius-server 10.0.10.1 port 1812 secret P@ssw0rd auth
 #Username netuser
     # Role admin
 
 AltLinux:
 useradd netuser
+
 
