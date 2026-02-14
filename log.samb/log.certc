@@ -25,8 +25,6 @@ openssl genrsa -out private/cakey.pem
 
 openssl x509 -req -days 1025 -in cacert.csr -signkey private/cakey.pem -out cacert.pem
 
-
-
 ADMIN-COD:
 scp admin@srv1-cod.cod.ssa2026.region:/var/ca/cacert.pem  /etc/pki/ca-trust/source/anchors/
 update-ca-trust
@@ -43,6 +41,7 @@ Cat <<EOF  > monitoring.ext
   [alt_names]
   DNS.1=srv1-cod.cod.ssa2026.region
   DNS.2=monitoring.cod.ssa2026.region
-  IP.1=10.0.10.100
+  IP.1=10.0.10.1
 EOF
 openssl x509 -req -CA cacert.pem -CAkey private/cakey.pem -in newcerts/monitoring.csr -out newcerts/monitoring.crt -days 365 -CAcreateserial -extfile monitoring.ext
+
