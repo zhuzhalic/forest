@@ -6,7 +6,8 @@ su - postgres -s /bin/sh -c 'createdb -O zabbix_user zabbix'
 systemctl restart postgresql
 su - postgres -s /bin/sh -c 'psql -U zabbix_user -f /usr/share/doc/zabbix-common-database-pgsql-*/schema.sql zabbix'
 su - postgres -s /bin/sh -c 'psql -U zabbix_user -f /usr/share/doc/zabbix-common-database-pgsql-*/images.sql zabbix'
-su - postgres -s /bin/sh -c 'psql -U zabbix_user -f /usr/share/doc/zabbix-common-database-pgsql-*/data.sql zabbix'
+su - postgres -s /bin/sh -c 'psql -U zabbix_user -f /usr/share/doc/zabbix-common-database-pgsql-*(viersion zabb)/data.sql zabbix'
+----------------------------------------
 #SRV1-COD:
 apt-get install -y apache2 apache2-mod_{php8.2,ssl}
 systemctl enable --now httpd2
@@ -17,13 +18,11 @@ nano /etc/php/8.2/apache2-mod_php/php.ini
  memory_limit = 256M
  date.tinezome = Europe/Moscow
  always_populate_raw_post_data = -1
-
-
-
+--------------------------------------------
 systemctl restrart httpd2
 apt-get install -y zabbix-server-pgsql
 nano /etc/zabbix/zabbix_server.conf
-DBHost=10.0.10.200
+DBHost=10.0.10.2
 DBName=Zabbix
 DBUser=Zabbix_user
 DBPassword=P@ssw0rdZabbix
@@ -38,4 +37,5 @@ a2enmod ssl; a2enmod rewrite; a2enport https
 apachectl -t
 chow -R apache2:apache2 /var/www/webapps/Zabbix
 systemctl restart httpd2
+
 
