@@ -14,4 +14,5 @@ sw2-cod     IN    A    10.0.30.253
 admin-cod   IN    A    10.0.30.252
 cli-cod     IN    A    10.0.30.1
 fw-cod      IN    A    10.0.30.254
+monitoring  IN    CNAME 10.0.10.1
 sip-cod     IN    A    10.0.50.100
