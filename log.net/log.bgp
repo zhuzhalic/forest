@@ -1,20 +1,29 @@
 RTR-COD:
-
---------------------------
+#hostname rtr-cod 
+#do wr
+----------------------
+#port ge1 (k IDECO)
+#Service-instance ge1
+#Encapsulation untagged
+#Int ge1
+#connect port ge1 service-instance ge1
+#ip add 10.255.255.1/30 (255.2 – Ideco)
+#ip nat inside
+----------------------------
+#port ge0 (k ISP)
+#Service-instance ge0
+#Encapsulation untagged
+#Int ge0
+#connect port ge1 service-instance ge0
+#ip add 178.207.179.4/29 (179.4 – ISP)
+# ip nat outside 
+-------------------------
 bgp:
 #router bgp 64500
 #bgp router-id 178.207.179.4 
 #neighbor 178.207.179.1 remote-as 31133
 #exit
 #do wr
-
-
-
-
-
-
-
-
 -/-/-/-/-/-/-/-/-/-/-
 RTR-A:
 #hostname rtr-a 
@@ -90,3 +99,38 @@ Ip nat source dynamic inside-to-outside pool VOIP overload interface ge0
 #ip route 0.0.0.0/0 178.207.179.25
 ----------------------------------
 #do wr
+------------------------------------
+
+TUNNEL:
+Rtr-cod:
+#interface tunnel.0
+# ip add 10.10.10.1/30 
+#ip tunnel 178.207.179.4 178.207.179.28 mode gre
+#ip ospf authentication message-digest
+#ip ospf message-digest-key 1 md5 P@ssw0rd
+---------------------------------
+Rtr-a:
+#interface tunnel.0
+# ip add 10.10.10.2/30 
+#ip tunnel 178.207.179.28 178.207.179.4 mode gre
+#ip ospf authentication message-digest
+#ip ospf message-digest-key 1 md5 P@ssw0rd
+---------------------------------
+OSPF:
+rtr-cod:
+#router ospf 
+#router-id 10.10.10.1
+#network 10.10.10.0 0.0.0.3 area 0 (tunnel)
+#network 10.255.255.0 0.0.0.3 area 0 (LAN Ideco)
+#passive-interface default
+#no passive-interface tunnel
+#no passive-interface to_fw
+
+rtr-a:
+#router ospf 
+#router-id 10.10.10.2
+#netowrk 10.10.10.0 0.0.0.3 area 0 (tunnel)
+#network 0. 0. 0.0 0.0.0.0 area 0 (LAN VL..)
+#passive-interface default
+#no passive-interface tunnel
+#no passive-interface &----------------
