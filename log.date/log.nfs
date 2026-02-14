@@ -11,7 +11,8 @@ Apt-get update && apt-get install -y nfs-utils nfs-clients
 Mkdir /mnt/nfs
 Chmod 777 /mnt/nfs
 Nano /etc/fstab
-10.0.30.100:/opt/data   /mnt/nfs  nfs  defaults,_netdev  0   0
+10.0.10.1:/opt/data   /mnt/nfs  nfs  defaults,_netdev  0   0
 Mount -av
 Df -h
 Создать файл и проверить на сервере
+
