@@ -2,6 +2,7 @@ SRV1-COD:
 Apt-get update && apt-get install bind bind-utils -y
 Nano /etc/bind/options.conf
 Listen-on any
+forward first
 Forwarders 100.100.100.100
 Allow-query any
 
@@ -17,6 +18,7 @@ Cp /etc/bind/zone/127.in-addr.arpa /etc/bind/zone/rev1cod
 Chown root:named /etc/bind/zone/rev1cod
 
 Nano /etc/bind/zone/rev1cod
+
 
 
 Systemctl enable –-now bind
