@@ -1,5 +1,6 @@
 RTR-COD:
 #hostname rtr-cod 
+#ip domain-name cod.ssa2026.region
 #do wr
 ----------------------
 #port ge1 (k IDECO)
@@ -27,6 +28,7 @@ bgp:
 -/-/-/-/-/-/-/-/-/-/-
 RTR-A:
 #hostname rtr-a 
+#ip domain-name cod.ssa2026.region
 #do wr
 # ip domain name office.ssa2026.region
 ----------------------
@@ -134,3 +136,4 @@ rtr-a:
 #passive-interface default
 #no passive-interface tunnel
 #no passive-interface &----------------
+
