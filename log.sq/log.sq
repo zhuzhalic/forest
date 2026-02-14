@@ -19,3 +19,8 @@ Su – postgress -s /bin/sh -c ‘createdb -O superadmin superadmin’
 ADMIN-COD:
 Apt-get update && apt-get install -y eepm
 Epm play -y dbeaver (или найти сайт алт линукс с ним и скачать там)
+
+host: srv2-cod.cod.ssa2026.region
+database: superadmin
+username superadmin
+password: P@ssw0rdSQL
